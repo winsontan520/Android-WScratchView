@@ -2,7 +2,7 @@ Android-WScratchView
 ====================
 
 ## Features:
-This is a simple library that provide a quick implementation by writing code in xml layout to create a view which can be scratched to reveal items behind it
+This is a simple library that provide a quick implementation by writing code in xml layout to create a view which can be scratched to reveal items behind it like Scratchcard!
 
 ## Screenshots
 ![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/screenshot1.png)
