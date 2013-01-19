@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <declare-styleable name="WScratchView">
+        <attr name="overlayColor" format="color"/>
+        <attr name="revealSize" format="dimension"/>
+        <attr name="antiAlias" format="boolean"/>
+        <attr name="scratchable" format="boolean"/>
+    </declare-styleable>
+</resources>
