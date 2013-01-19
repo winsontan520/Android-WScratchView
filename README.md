@@ -1,6 +1,13 @@
 Android-WScratchView
 ====================
 
+## Features:
+This is a simple library that provide a quick implementation by writing code in xml layout to create a view which can be scratched to reveal items behind it
+
+## Screenshots
+![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/screenshot1.png)
+![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/screenshot2.png)
+
 ## Usage:
 
 1. Git clone the project git://github.com/winsontan520/Android-WScratchView.git
