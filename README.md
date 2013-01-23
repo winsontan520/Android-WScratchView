@@ -3,18 +3,21 @@ Android-WScratchView
 
 ## Features
 This is a simple library that provide a quick implementation by writing code in xml layout to create a view which can be scratched to reveal items behind it like Scratchcard!
+There are 2 options to use: with or without build on library project.
+
+For those dislike using reference to library project, I recommend to use option 2
 
 ## Screenshots
 ![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/screenshot1.png)
 
 ## Usage
-
+## Option 1: With library project
 1. Git clone the project git://github.com/winsontan520/Android-WScratchView.git
 2. For Eclipse, Import > Existing Android Code Into Workspace > Browse folder WScratchViewLibrary > Finish
 3. Build the imported library project
 4. Include the library in your project by right click your project > Android > In library tab click Add and choose the imported library
 For testing, you may use sample project by import the folder testWScratchView and add the library
-If you never include library project, I would recommend have a read at http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject
+If you never include library project, I would recommend you to use option 2.
 5. To call the view, in your layout xml,
     
         <com.winsontan520.WScratchView
@@ -31,6 +34,34 @@ If you never include library project, I would recommend have a read at http://de
 
 
 6. You can customize the overlay color, size and other attributes by changing the value. The attributes are self explanatory.
+
+## Option 2: Without library project (Using standalone Jar)
+1. Copy https://github.com/winsontan520/Android-WScratchView/blob/master/wscratchviewjar.jar to your project libs folder
+2. In your xml write something like below, 
+    
+        <com.winsontan520.WScratchView
+            android:id="@+id/scratch_view"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+3. Drawback of this option is you cant customize value in xml like option 1
+4. To customize value, in your Activity,
+
+
+    	protected void onCreate(Bundle savedInstanceState) {
+    		super.onCreate(savedInstanceState);
+    		setContentView(R.layout.activity_main);
+    		
+    		scratchView = (WScratchView) findViewById(R.id.scratch_view);
+    		
+    		// customize attribute programmatically
+    		scratchView.setScratchable(true);
+    		scratchView.setRevealSize(50);
+    		scratchView.setAntiAlias(true);
+    		scratchView.setOverlayColor(Color.RED);	
+    	}
 
 ## License
     Copyright 2013 Winson Tan
