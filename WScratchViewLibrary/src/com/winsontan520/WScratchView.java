@@ -51,12 +51,6 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
     private int mRevealSize;
     private boolean mIsScratchable = true;
     private boolean mIsAntiAlias = false;
-    
-    float circleArea;
-    int updateRevealCount = 0;
-    int updateRevealCountFlag;
-    boolean isUpdated = false;
-	
 
     public WScratchView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
