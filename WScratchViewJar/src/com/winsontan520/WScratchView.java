@@ -21,7 +21,9 @@ import java.util.List;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
@@ -39,19 +41,23 @@ import android.view.SurfaceView;
  */
 public class WScratchView extends SurfaceView implements IWScratchView, SurfaceHolder.Callback{
     private static final String TAG = "WScratchView";
-    
+
     // default value constants
     private final int DEFAULT_COLOR = 0xff444444; // default color is dark gray
     private final int DEFAULT_REVEAL_SIZE = 30;
     
     private Context mContext;
     private WScratchViewThread mThread;
-    List<Point> mPointTouchedList = new ArrayList<Point>();
+    List<Path> mPathList = new ArrayList<Path>();
     private int mOverlayColor;
     private Paint mOverlayPaint;
-    private int mRevealSize = 30;
+    private int mRevealSize;
     private boolean mIsScratchable = true;
-    private boolean mIsAntiAlias = true;
+    private boolean mIsAntiAlias = false;
+    private Path path;
+	private float startX = 0;
+	private float startY = 0;
+	private boolean mScratchStart =false;
 
     public WScratchView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
@@ -68,49 +74,73 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
         
     	// default value
     	mOverlayColor = DEFAULT_COLOR;
+    	mRevealSize = DEFAULT_REVEAL_SIZE;
         
     	setZOrderOnTop(true);   
     	SurfaceHolder holder = getHolder();
     	holder.addCallback(this);
     	holder.setFormat(PixelFormat.TRANSPARENT);
-	    
-		mThread = new WScratchViewThread(getHolder(), this);
 
 		mOverlayPaint = new Paint();   
 		mOverlayPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR)); 
+		mOverlayPaint.setStyle(Paint.Style.STROKE);
+		mOverlayPaint.setStrokeCap(Paint.Cap.ROUND);
+		mOverlayPaint.setStrokeJoin(Paint.Join.ROUND);
 		
-		mOverlayPaint.setAntiAlias(mIsAntiAlias);
-
 	}
     
 
 	@Override
 	public void onDraw(Canvas canvas) {
 		canvas.drawColor(mOverlayColor);
-		for (Point point : mPointTouchedList) {
-			canvas.drawCircle(point.x, point.y, mRevealSize, mOverlayPaint);
+		
+		for(Path path: mPathList){
+			mOverlayPaint.setAntiAlias(mIsAntiAlias);
+			mOverlayPaint.setStrokeWidth(mRevealSize);	
+			
+			canvas.drawPath(path, mOverlayPaint);
 		}
-		super.onDraw(canvas);
-
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean onTouchEvent(MotionEvent me) {
 		synchronized (mThread.getSurfaceHolder()) {
-			Log.v(TAG,"cant scratch");
 			if (!mIsScratchable) {
-				Log.v(TAG,"cant scratch");
 				return true;
 			}
 
-			Point pointTouched = new Point();
-			pointTouched.x = (int) event.getX();
-			pointTouched.y = (int) event.getY();
-			if (!mPointTouchedList.contains(pointTouched)) {
-				mPointTouchedList.add(pointTouched);
-
+			switch(me.getAction()){
+			case MotionEvent.ACTION_DOWN:
+				path = new Path();
+				path.moveTo(me.getX(), me.getY());
+				startX = me.getX();
+				startY = me.getY();
+				mPathList.add(path);
+			    break;
+			case MotionEvent.ACTION_MOVE:
+				if(mScratchStart){
+					path.lineTo(me.getX(), me.getY());
+				}else{
+					if(isScratch(startX, me.getX(), startY, me.getY())){
+						mScratchStart = true;
+						path.lineTo(me.getX(), me.getY());
+					}
+				}
+				break;
+			case MotionEvent.ACTION_UP:
+				mScratchStart = false;
+				break;
 			}
 			return true;
+		}
+	}
+
+	private boolean isScratch(float oldX, float x, float oldY, float y) {
+		float distance = (float) Math.sqrt(Math.pow(oldX - x, 2) + Math.pow(oldY - y, 2));
+		if(distance > mRevealSize * 2){
+			return true;
+		}else{
+			return false;
 		}
 	}
 
@@ -121,6 +151,7 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 
 	@Override
 	public void surfaceCreated(SurfaceHolder arg0) {
+		mThread = new WScratchViewThread(getHolder(), this); 
 		mThread.setRunning(true);
         mThread.start();
 	}
@@ -166,7 +197,9 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 				try {
 					c = mSurfaceHolder.lockCanvas(null);
 					synchronized (mSurfaceHolder) {
-						mView.onDraw(c);
+						if(c != null){	
+							mView.onDraw(c);
+						}
 					}
 				} finally {
 					if (c != null) {
@@ -180,7 +213,7 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 	@Override
 	public void resetView(){
 		synchronized (mThread.getSurfaceHolder()) {
-			mPointTouchedList.clear();
+			mPathList.clear();
 		}
 	}
 
@@ -206,7 +239,7 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 
 	@Override
 	public void setAntiAlias(boolean flag) {
-		mOverlayPaint.setAntiAlias(flag);
+		mIsAntiAlias = flag;
 	}
 }
 
