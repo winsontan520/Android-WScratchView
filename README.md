@@ -25,8 +25,7 @@ If you never include library project, I would recommend you to use option 2.
             android:id="@+id/scratch_view"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             wsv:antiAlias="true"
             wsv:overlayColor="#0000ff"
             wsv:revealSize="20dp"
@@ -43,8 +42,7 @@ If you never include library project, I would recommend you to use option 2.
             android:id="@+id/scratch_view"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerInParent="true" />
 
 3. Drawback of this option is you cant customize value in xml like option 1
 4. To customize value, in your Activity,
