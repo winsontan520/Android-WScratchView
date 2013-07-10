@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 	private WScratchView scratchView;
@@ -15,7 +16,10 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		//TODO: create list sample
+		
 		scratchView = (WScratchView) findViewById(R.id.scratch_view);
+		
 	}
 
 	@Override

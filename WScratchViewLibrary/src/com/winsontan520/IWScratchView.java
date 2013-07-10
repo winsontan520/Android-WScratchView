@@ -15,6 +15,9 @@
  *******************************************************************************/
 package com.winsontan520;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
 public interface IWScratchView {
 
 	/**
@@ -59,4 +62,18 @@ public interface IWScratchView {
 	 * 
 	 */
 	public void resetView();
+
+	/**
+	 * Set drawable for scratch view
+	 * 
+	 * @param drawable - Set drawable for scratch view
+	 */
+	public void setScratchDrawable(Drawable drawable);
+
+	/**
+	 * Set bitmap for scratch view
+	 * 
+	 * @param bitmap - Set bitmap for scratch view
+	 */
+	public void setScratchBitmap(Bitmap b);
 }
