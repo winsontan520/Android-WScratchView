@@ -59,4 +59,20 @@ public interface IWScratchView {
 	 * 
 	 */
 	public void resetView();
+	
+	/**
+	 * Get the ratio of scratched area.
+	 * 
+	 * @return the ratio of scratched area from 0.0 to 1.0
+	 */
+	public float getScratchedRatio();
+
+	/**
+	 * Get the ratio of scratched area with the specified speed.
+	 * It is done by comparing how many pixels have been set to transparent.
+	 * 
+	 * @param speed 1 is the slowest comparing all pixels, 2 compares half of the pixels, etc.
+	 * @return the ratio of scratched area from 0.0 to 1.0
+	 */
+	public float getScratchedRatio(int speed);
 }
