@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
@@ -63,6 +64,7 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 	private Bitmap mScratchBitmap;
 	private Drawable mScratchDrawable = null;
 	private Paint mBitmapPaint;
+	private Matrix mMatrix;
 
 	public WScratchView(Context ctx, AttributeSet attrs) {
 		super(ctx, attrs);
@@ -135,7 +137,14 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 		super.onDraw(canvas);
 
 		if (mScratchBitmap != null) {
-			canvas.drawBitmap(mScratchBitmap, 0, 0, mBitmapPaint);
+			if(mMatrix == null){
+				float scaleWidth = (float) canvas.getWidth() / mScratchBitmap.getWidth();
+				float scaleHeight = (float) canvas.getHeight() / mScratchBitmap.getHeight();
+				mMatrix = new Matrix();
+				mMatrix.postScale(scaleWidth, scaleHeight);
+			}
+			canvas.drawBitmap(mScratchBitmap, mMatrix, mBitmapPaint);
+			//canvas.drawBitmap(mScratchBitmap, 0, 0, mBitmapPaint);
 		} else {
 			canvas.drawColor(mOverlayColor);
 		}
@@ -245,7 +254,7 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 					c = mSurfaceHolder.lockCanvas(null);
 					synchronized (mSurfaceHolder) {
 						if (c != null) {
-							mView.onDraw(c);
+							mView.draw(c);
 						}
 					}
 				} finally {

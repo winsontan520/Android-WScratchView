@@ -14,12 +14,49 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.testwscratchview.MainActivity"
+            android:name=".Demos"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DefaultXML"
+            android:label="Default (XML)" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="com.example.testwscratchview.SAMPLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DefaultCodes"
+            android:label="Default (Codes)" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="com.example.testwscratchview.SAMPLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ImageOverlayCodes"
+            android:label="Image Overlay Codes (Experimental)" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="com.example.testwscratchview.SAMPLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ImageOverlayXML"
+            android:label="Image Overlay XML (Experimental)" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="com.example.testwscratchview.SAMPLE" />
             </intent-filter>
         </activity>
     </application>

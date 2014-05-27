@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/com.example.testwscratchview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ImageOverlayXML" >
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/ic_launcher" />
+
+    <com.winsontan520.WScratchView
+        xmlns:wsv="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/scratch_view"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        wsv:antiAlias="true"
+        wsv:overlayColor="#0000ff"
+        wsv:revealSize="20dp"
+        wsv:scratchable="true" />
+
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:onClick="onClickHandler"
+        android:text="Reset" />
+
+</RelativeLayout>

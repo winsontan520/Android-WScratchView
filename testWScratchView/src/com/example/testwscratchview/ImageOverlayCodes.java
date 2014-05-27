@@ -8,18 +8,16 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 
-public class MainActivity extends Activity {
+public class ImageOverlayCodes extends Activity {
 	private WScratchView scratchView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		//TODO: create list sample
-		
+		setContentView(R.layout.image_overlay_xml);
+
 		scratchView = (WScratchView) findViewById(R.id.scratch_view);
-		
+
 	}
 
 	@Override
