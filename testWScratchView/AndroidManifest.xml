@@ -42,8 +42,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImageOverlayCodes"
-            android:label="Image Overlay Codes (Experimental)" >
+            android:name=".ImageOverlayDrawable"
+            android:label="Image Overlay Drawable (Experimental)" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="com.example.testwscratchview.SAMPLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ImageOverlayBitmap"
+            android:label="Image Overlay Bitmap (Experimental)" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -4,20 +4,23 @@ import com.winsontan520.WScratchView;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 
-public class ImageOverlayXML extends Activity {
+public class ImageOverlayDrawable extends Activity {
 	private WScratchView scratchView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.image_overlay_xml);
+		setContentView(R.layout.image_overlay_drawable);
 
 		scratchView = (WScratchView) findViewById(R.id.scratch_view);
 
+		// set drawable to scratchview
+		scratchView.setScratchDrawable(getResources().getDrawable(R.drawable.test));
 	}
 
 	@Override

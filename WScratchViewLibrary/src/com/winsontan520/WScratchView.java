@@ -301,6 +301,9 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 	@Override
 	public void setScratchDrawable(Drawable d) {
 		mScratchDrawable = d;
+		if(mScratchDrawable != null){
+			mScratchBitmap = ((BitmapDrawable) mScratchDrawable).getBitmap();
+		}
 	}
 
 	@Override

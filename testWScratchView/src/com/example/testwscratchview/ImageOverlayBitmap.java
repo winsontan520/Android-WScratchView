@@ -1,23 +1,27 @@
 package com.example.testwscratchview;
 
-import com.winsontan520.WScratchView;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ImageView;
 
-public class ImageOverlayCodes extends Activity {
+import com.winsontan520.WScratchView;
+
+public class ImageOverlayBitmap extends Activity {
 	private WScratchView scratchView;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.image_overlay_xml);
+		setContentView(R.layout.image_overlay_bitmap);
 
 		scratchView = (WScratchView) findViewById(R.id.scratch_view);
 
+		// set bitmap to scratchview
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test);
+		scratchView.setScratchBitmap(bitmap);
 	}
 
 	@Override
@@ -27,8 +31,8 @@ public class ImageOverlayCodes extends Activity {
 		return true;
 	}
 
-	public void onClickHandler(View view){
-		switch(view.getId()){
+	public void onClickHandler(View view) {
+		switch (view.getId()) {
 		case R.id.reset_button:
 			scratchView.resetView();
 			break;
