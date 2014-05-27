@@ -3,9 +3,17 @@ Android-WScratchView
 
 ## Features
 This is a simple library that provide a quick implementation by writing code in xml layout to create a view which can be scratched to reveal items behind it like Scratchcard!
-There are 2 options to use: with or without build on library project.
 
-For those dislike using reference to library project, I recommend to use option 2
+## Progress Note
+The standalone is obsolete, please use only project library for latest build
+
+## Changelog
+v1.0 First version - Color Overlay
+
+## Todo
+-update Image Overlay
+-update project structures
+-update google play sample
 
 ## Screenshots
 ![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/screenshot1.png)
@@ -34,7 +42,7 @@ If you never include library project, I would recommend you to use option 2.
 
 6. You can customize the overlay color, size and other attributes by changing the value. The attributes are self explanatory.
 
-## Option 2: Without library project (Using standalone Jar)
+## Option 2: Without library project (Using standalone Jar) (OBSOLETE)
 1. Copy https://github.com/winsontan520/Android-WScratchView/blob/master/wscratchviewjar.jar to your project libs folder
 2. In your xml write something like below, 
     
