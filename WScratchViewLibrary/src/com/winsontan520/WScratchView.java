@@ -20,16 +20,15 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
-import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -45,6 +44,7 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
     // default value constants
     private final int DEFAULT_COLOR = 0xff444444; // default color is dark gray
     private final int DEFAULT_REVEAL_SIZE = 30;
+    private final int DEFAULT_SCRATCH_TEST_SPEED = 4;
     
     private Context mContext;
     private WScratchViewThread mThread;
@@ -58,6 +58,8 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 	private float startX = 0;
 	private float startY = 0;
 	private boolean mScratchStart =false;
+	private Bitmap mScratchedTestBitmap;
+	private Canvas mScratchedTestCanvas;
 
     public WScratchView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
@@ -175,6 +177,9 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 		mThread = new WScratchViewThread(getHolder(), this); 
 		mThread.setRunning(true);
         mThread.start();
+        
+        mScratchedTestBitmap = Bitmap.createBitmap(arg0.getSurfaceFrame().width(), arg0.getSurfaceFrame().height(), Bitmap.Config.ARGB_8888);
+        mScratchedTestCanvas = new Canvas(mScratchedTestBitmap);
 	}
 
 	@Override
@@ -219,7 +224,7 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 					c = mSurfaceHolder.lockCanvas(null);
 					synchronized (mSurfaceHolder) {
 						if(c != null){	
-							mView.onDraw(c);
+							mView.draw(c);
 						}
 					}
 				} finally {
@@ -263,6 +268,33 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 		mIsAntiAlias = flag;
 	}
 
+	@Override
+	public float getScratchedRatio() {
+		return getScratchedRatio(DEFAULT_SCRATCH_TEST_SPEED);
+	}
+
+	@Override
+	public float getScratchedRatio(int speed) {
+		if (null == mScratchedTestBitmap) {
+			return 0;
+		}
+		draw(mScratchedTestCanvas);
+	  
+		final int width = mScratchedTestBitmap.getWidth();
+		final int height = mScratchedTestBitmap.getHeight();
+	  
+		int count = 0;
+		for (int i = 0 ; i < width ; i += speed) {
+			for (int j = 0 ; j < height ; j += speed) {
+				if (0 == Color.alpha(mScratchedTestBitmap.getPixel(i, j))) {
+					count++;
+				}
+			}
+		}
+		float completed = (float)count / ((width/speed) * (height/speed));
+	
+		return completed;
+	}
 }
 
 
