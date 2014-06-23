@@ -5,15 +5,18 @@ Android-WScratchView
 This is a simple library that provide a quick implementation by writing code in xml layout to create a view which can be scratched to reveal items behind it like Scratchcard!
 
 ## Progress Note
-The standalone is obsolete, please use only project library for latest build
+Please use only project library for latest build
 
 ## Changelog
 v1.0 First version - Color Overlay
+v1.1 Add image overlay (Experimental) and getPercentage with callback (thanks to davefong)
 
 ## Todo
--update Image Overlay
+-update Image Overlay (done 23 June 2014)
+-update getPercentage (done 23 June 2014)
 -update project structures
 -update google play sample
+-update tutorial
 
 ## Screenshots
 ![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/screenshot1.png)
@@ -43,31 +46,7 @@ If you never include library project, I would recommend you to use option 2.
 6. You can customize the overlay color, size and other attributes by changing the value. The attributes are self explanatory.
 
 ## Option 2: Without library project (Using standalone Jar) (OBSOLETE)
-1. Copy https://github.com/winsontan520/Android-WScratchView/blob/master/wscratchviewjar.jar to your project libs folder
-2. In your xml write something like below, 
-    
-        <com.winsontan520.WScratchView
-            android:id="@+id/scratch_view"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_centerInParent="true" />
-
-3. Drawback of this option is you cant customize value in xml like option 1
-4. To customize value, in your Activity,
-
-
-    	protected void onCreate(Bundle savedInstanceState) {
-    		super.onCreate(savedInstanceState);
-    		setContentView(R.layout.activity_main);
-    		
-    		scratchView = (WScratchView) findViewById(R.id.scratch_view);
-    		
-    		// customize attribute programmatically
-    		scratchView.setScratchable(true);
-    		scratchView.setRevealSize(50);
-    		scratchView.setAntiAlias(true);
-    		scratchView.setOverlayColor(Color.RED);	
-    	}
+This option no longer available since v1.1, please use project library.
 
 ## License
     Copyright 2013 Winson Tan
