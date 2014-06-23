@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.winsontan520;
 
+import com.winsontan520.WScratchView.OnScratchCallback;
+
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
@@ -76,4 +78,21 @@ public interface IWScratchView {
 	 * @param bitmap - Set bitmap for scratch view
 	 */
 	public void setScratchBitmap(Bitmap b);
+
+	/**
+	 * Get scratched ratio (contribution from daveyfong)
+	 * 
+	 * @return  float - return Scratched ratio
+	 */
+	public float getScratchedRatio();
+
+	/**
+	 * Get scratched ratio (contribution from daveyfong)
+	 * 
+	 * @param int - Scratch speed
+	 * @return  float - return Scratched ratio
+	 */
+	public float getScratchedRatio(int speed);
+
+	public void setOnScratchCallback(OnScratchCallback callback);
 }

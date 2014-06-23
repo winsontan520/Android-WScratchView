@@ -5,12 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".ImageOverlayXML" >
 
+    <TextView
+        android:id="@+id/percentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/scratch_view"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000000" />
+
     <ImageView
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/ic_launcher" />
+        android:background="@drawable/treasure" />
 
     <com.winsontan520.WScratchView
         xmlns:wsv="http://schemas.android.com/apk/res-auto"

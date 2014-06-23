@@ -6,22 +6,42 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.winsontan520.WScratchView;
 
 public class ImageOverlayBitmap extends Activity {
 	private WScratchView scratchView;
+	private TextView percentageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.image_overlay_bitmap);
 
+		percentageView = (TextView) findViewById(R.id.percentage);
 		scratchView = (WScratchView) findViewById(R.id.scratch_view);
 
 		// set bitmap to scratchview
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test);
 		scratchView.setScratchBitmap(bitmap);
+
+		// add callback for update scratch percentage
+		scratchView.setOnScratchCallback(new WScratchView.OnScratchCallback() {
+
+			@Override
+			public void onScratch(float percentage) {
+				updatePercentage(percentage);
+			}
+
+		});
+
+		updatePercentage(0f);
+	}
+
+	protected void updatePercentage(float percentage) {
+		String percentage2decimal = String.format("%.2f", percentage) + " %";
+		percentageView.setText(percentage2decimal);
 	}
 
 	@Override
@@ -35,6 +55,7 @@ public class ImageOverlayBitmap extends Activity {
 		switch (view.getId()) {
 		case R.id.reset_button:
 			scratchView.resetView();
+			updatePercentage(0f);
 			break;
 		}
 	}

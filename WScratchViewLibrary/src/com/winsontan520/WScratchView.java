@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -41,13 +42,14 @@ import android.view.SurfaceView;
  * 
  * @author winsontan520
  */
-public class WScratchView extends SurfaceView implements IWScratchView,
-		SurfaceHolder.Callback {
+public class WScratchView extends SurfaceView implements IWScratchView, SurfaceHolder.Callback {
 	private static final String TAG = "WScratchView";
 
 	// default value constants
 	private final int DEFAULT_COLOR = 0xff444444; // default color is dark gray
 	private final int DEFAULT_REVEAL_SIZE = 30;
+	
+	public static final int DEFAULT_SCRATCH_TEST_SPEED = 4;
 
 	private Context mContext;
 	private WScratchViewThread mThread;
@@ -65,6 +67,9 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 	private Drawable mScratchDrawable = null;
 	private Paint mBitmapPaint;
 	private Matrix mMatrix;
+	private Bitmap mScratchedTestBitmap;
+	private Canvas mScratchedTestCanvas;
+	private OnScratchCallback mOnScratchCallback;
 
 	public WScratchView(Context ctx, AttributeSet attrs) {
 		super(ctx, attrs);
@@ -83,8 +88,7 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 		mOverlayColor = DEFAULT_COLOR;
 		mRevealSize = DEFAULT_REVEAL_SIZE;
 
-		TypedArray ta = context.obtainStyledAttributes(attrs,
-				R.styleable.WScratchView, 0, 0);
+		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.WScratchView, 0, 0);
 
 		final int indexCount = ta.getIndexCount();
 		for (int i = 0; i < indexCount; i++) {
@@ -94,8 +98,7 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 				mOverlayColor = ta.getColor(attr, DEFAULT_COLOR);
 				break;
 			case R.styleable.WScratchView_revealSize:
-				mRevealSize = ta.getDimensionPixelSize(attr,
-						DEFAULT_REVEAL_SIZE);
+				mRevealSize = ta.getDimensionPixelSize(attr, DEFAULT_REVEAL_SIZE);
 				break;
 			case R.styleable.WScratchView_antiAlias:
 				mIsAntiAlias = ta.getBoolean(attr, false);
@@ -104,8 +107,7 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 				mIsScratchable = ta.getBoolean(attr, true);
 				break;
 			case R.styleable.WScratchView_scratchDrawable:
-				mScratchDrawable = ta
-						.getDrawable(R.styleable.WScratchView_scratchDrawable);
+				mScratchDrawable = ta.getDrawable(R.styleable.WScratchView_scratchDrawable);
 				break;
 			}
 		}
@@ -137,14 +139,13 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 		super.onDraw(canvas);
 
 		if (mScratchBitmap != null) {
-			if(mMatrix == null){
+			if (mMatrix == null) {
 				float scaleWidth = (float) canvas.getWidth() / mScratchBitmap.getWidth();
 				float scaleHeight = (float) canvas.getHeight() / mScratchBitmap.getHeight();
 				mMatrix = new Matrix();
 				mMatrix.postScale(scaleWidth, scaleHeight);
 			}
 			canvas.drawBitmap(mScratchBitmap, mMatrix, mBitmapPaint);
-			//canvas.drawBitmap(mScratchBitmap, 0, 0, mBitmapPaint);
 		} else {
 			canvas.drawColor(mOverlayColor);
 		}
@@ -155,6 +156,13 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 
 			canvas.drawPath(path, mOverlayPaint);
 		}
+		
+		
+	}
+
+	private void updateScratchedPercentage() {
+		if(mOnScratchCallback == null) return;
+		mOnScratchCallback.onScratch(getScratchedRatio());
 	}
 
 	@Override
@@ -181,6 +189,7 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 						path.lineTo(me.getX(), me.getY());
 					}
 				}
+				updateScratchedPercentage();
 				break;
 			case MotionEvent.ACTION_UP:
 				mScratchStart = false;
@@ -191,8 +200,7 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 	}
 
 	private boolean isScratch(float oldX, float x, float oldY, float y) {
-		float distance = (float) Math.sqrt(Math.pow(oldX - x, 2)
-				+ Math.pow(oldY - y, 2));
+		float distance = (float) Math.sqrt(Math.pow(oldX - x, 2) + Math.pow(oldY - y, 2));
 		if (distance > mRevealSize * 2) {
 			return true;
 		} else {
@@ -210,6 +218,9 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 		mThread = new WScratchViewThread(getHolder(), this);
 		mThread.setRunning(true);
 		mThread.start();
+
+		mScratchedTestBitmap = Bitmap.createBitmap(arg0.getSurfaceFrame().width(), arg0.getSurfaceFrame().height(), Bitmap.Config.ARGB_8888);
+		mScratchedTestCanvas = new Canvas(mScratchedTestBitmap);
 	}
 
 	@Override
@@ -301,7 +312,7 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 	@Override
 	public void setScratchDrawable(Drawable d) {
 		mScratchDrawable = d;
-		if(mScratchDrawable != null){
+		if (mScratchDrawable != null) {
 			mScratchBitmap = ((BitmapDrawable) mScratchDrawable).getBitmap();
 		}
 	}
@@ -309,5 +320,45 @@ public class WScratchView extends SurfaceView implements IWScratchView,
 	@Override
 	public void setScratchBitmap(Bitmap b) {
 		mScratchBitmap = b;
+	}
+
+	@Override
+	public float getScratchedRatio() {
+		return getScratchedRatio(DEFAULT_SCRATCH_TEST_SPEED);
+	}
+	
+	/**
+	 * thanks to https://github.com/daveyfong for providing this method
+	 */
+	@Override
+	public float getScratchedRatio(int speed) {
+		if (null == mScratchedTestBitmap) {
+			return 0;
+		}
+		draw(mScratchedTestCanvas);
+
+		final int width = mScratchedTestBitmap.getWidth();
+		final int height = mScratchedTestBitmap.getHeight();
+
+		int count = 0;
+		for (int i = 0; i < width; i += speed) {
+			for (int j = 0; j < height; j += speed) {
+				if (0 == Color.alpha(mScratchedTestBitmap.getPixel(i, j))) {
+					count++;
+				}
+			}
+		}
+		float completed = (float) count / ((width / speed) * (height / speed)) * 100;
+
+		return completed;
+	}
+	
+	@Override
+	public void setOnScratchCallback(OnScratchCallback callback) {
+		mOnScratchCallback = callback;
+	}
+	
+	public static abstract class OnScratchCallback{
+		public abstract void onScratch(float percentage);
 	}
 }
