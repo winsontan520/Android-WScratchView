@@ -48,6 +48,10 @@ If you never include library project, I would recommend you to use option 2.
 ## Option 2: Without library project (Using standalone Jar) (OBSOLETE)
 This option no longer available since v1.1, please use project library.
 
+## Contributions
+
+* [daveyfong](https://github.com/daveyfong)
+
 ## License
     Copyright 2013 Winson Tan
     
