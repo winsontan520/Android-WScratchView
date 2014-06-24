@@ -21,6 +21,9 @@ Please use only project library for latest build
 ## Screenshots
 ![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/github_screenshot.png)
 
+## Demo
+[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=com.winsontan520.testwscratchview)
+
 ## Usage
 ## Option 1: With library project
 1. Git clone the project git://github.com/winsontan520/Android-WScratchView.git
