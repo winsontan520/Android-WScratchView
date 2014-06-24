@@ -1,7 +1,6 @@
-package com.example.testwscratchview;
+package com.winsontan520.testwscratchview;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -9,23 +8,20 @@ import android.widget.TextView;
 
 import com.winsontan520.WScratchView;
 
-public class DefaultCodes extends Activity {
+public class ImageOverlayDrawable extends Activity {
 	private WScratchView scratchView;
 	private TextView percentageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.default_codes);
+		setContentView(R.layout.image_overlay_drawable);
 
 		percentageView = (TextView) findViewById(R.id.percentage);
 		scratchView = (WScratchView) findViewById(R.id.scratch_view);
 
-		// customize attribute programmatically
-		scratchView.setScratchable(true);
-		scratchView.setRevealSize(50);
-		scratchView.setAntiAlias(true);
-		scratchView.setOverlayColor(Color.RED);
+		// set drawable to scratchview
+		scratchView.setScratchDrawable(getResources().getDrawable(R.drawable.test));
 
 		// add callback for update scratch percentage
 		scratchView.setOnScratchCallback(new WScratchView.OnScratchCallback() {

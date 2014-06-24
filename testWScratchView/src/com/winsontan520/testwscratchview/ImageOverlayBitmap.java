@@ -1,4 +1,4 @@
-package com.example.testwscratchview;
+package com.winsontan520.testwscratchview;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.winsontan520.testwscratchview.R;
 import com.winsontan520.WScratchView;
 
 public class ImageOverlayBitmap extends Activity {

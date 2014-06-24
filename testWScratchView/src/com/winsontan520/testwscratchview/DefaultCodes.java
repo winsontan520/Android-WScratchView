@@ -1,25 +1,32 @@
-package com.example.testwscratchview;
+package com.winsontan520.testwscratchview;
 
-import com.winsontan520.WScratchView;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ImageOverlayXML extends Activity {
+import com.winsontan520.testwscratchview.R;
+import com.winsontan520.WScratchView;
+
+public class DefaultCodes extends Activity {
 	private WScratchView scratchView;
 	private TextView percentageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.image_overlay_xml);
+		setContentView(R.layout.default_codes);
 
 		percentageView = (TextView) findViewById(R.id.percentage);
 		scratchView = (WScratchView) findViewById(R.id.scratch_view);
+
+		// customize attribute programmatically
+		scratchView.setScratchable(true);
+		scratchView.setRevealSize(50);
+		scratchView.setAntiAlias(true);
+		scratchView.setOverlayColor(Color.RED);
 
 		// add callback for update scratch percentage
 		scratchView.setOnScratchCallback(new WScratchView.OnScratchCallback() {

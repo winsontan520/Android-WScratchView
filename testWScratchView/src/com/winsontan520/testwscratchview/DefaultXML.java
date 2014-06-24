@@ -1,30 +1,26 @@
-package com.example.testwscratchview;
+package com.winsontan520.testwscratchview;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 
 import com.winsontan520.WScratchView;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-public class ImageOverlayDrawable extends Activity {
+public class DefaultXML extends Activity {
 	private WScratchView scratchView;
 	private TextView percentageView;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.image_overlay_drawable);
+		setContentView(R.layout.default_xml);
 
 		percentageView = (TextView) findViewById(R.id.percentage);
+		
 		scratchView = (WScratchView) findViewById(R.id.scratch_view);
-
-		// set drawable to scratchview
-		scratchView.setScratchDrawable(getResources().getDrawable(R.drawable.test));
-
+		
 		// add callback for update scratch percentage
 		scratchView.setOnScratchCallback(new WScratchView.OnScratchCallback() {
 
@@ -34,7 +30,7 @@ public class ImageOverlayDrawable extends Activity {
 			}
 
 		});
-
+		
 		updatePercentage(0f);
 	}
 
@@ -50,8 +46,8 @@ public class ImageOverlayDrawable extends Activity {
 		return true;
 	}
 
-	public void onClickHandler(View view) {
-		switch (view.getId()) {
+	public void onClickHandler(View view){
+		switch(view.getId()){
 		case R.id.reset_button:
 			scratchView.resetView();
 			updatePercentage(0f);

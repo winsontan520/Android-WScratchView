@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.testwscratchview"
+    package="com.winsontan520.testwscratchview"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".Demos"
+            android:name="com.winsontan520.testwscratchview.Demos"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,48 +24,48 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DefaultXML"
+            android:name="com.winsontan520.testwscratchview.DefaultXML"
             android:label="Default (XML)" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="com.example.testwscratchview.SAMPLE" />
+                <category android:name="com.winsontan520.testwscratchview.SAMPLE" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".DefaultCodes"
+            android:name="com.winsontan520.testwscratchview.DefaultCodes"
             android:label="Default (Codes)" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="com.example.testwscratchview.SAMPLE" />
+                <category android:name="com.winsontan520.testwscratchview.SAMPLE" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImageOverlayDrawable"
+            android:name="com.winsontan520.testwscratchview.ImageOverlayDrawable"
             android:label="Image Overlay Drawable (Experimental)" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="com.example.testwscratchview.SAMPLE" />
+                <category android:name="com.winsontan520.testwscratchview.SAMPLE" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImageOverlayBitmap"
+            android:name="com.winsontan520.testwscratchview.ImageOverlayBitmap"
             android:label="Image Overlay Bitmap (Experimental)" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="com.example.testwscratchview.SAMPLE" />
+                <category android:name="com.winsontan520.testwscratchview.SAMPLE" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImageOverlayXML"
+            android:name="com.winsontan520.testwscratchview.ImageOverlayXML"
             android:label="Image Overlay XML (Experimental)" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="com.example.testwscratchview.SAMPLE" />
+                <category android:name="com.winsontan520.testwscratchview.SAMPLE" />
             </intent-filter>
         </activity>
     </application>

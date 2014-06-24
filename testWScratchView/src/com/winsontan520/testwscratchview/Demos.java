@@ -1,4 +1,4 @@
-package com.example.testwscratchview;
+package com.winsontan520.testwscratchview;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class Demos extends ListActivity {
 		List<Map<String, Object>> myData = new ArrayList<Map<String, Object>>();
 
 		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-		mainIntent.addCategory("com.example.testwscratchview.SAMPLE");
+		mainIntent.addCategory("com.winsontan520.testwscratchview.SAMPLE");
 
 		PackageManager pm = getPackageManager();
 		List<ResolveInfo> list = pm.queryIntentActivities(mainIntent, 0);
