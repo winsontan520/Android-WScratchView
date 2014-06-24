@@ -19,7 +19,7 @@ Please use only project library for latest build
 - update tutorial
 
 ## Screenshots
-![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/screenshot1.png)
+![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/github_screenshot.png)
 
 ## Usage
 ## Option 1: With library project
