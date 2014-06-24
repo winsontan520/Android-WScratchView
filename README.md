@@ -8,15 +8,15 @@ This is a simple library that provide a quick implementation by writing code in 
 Please use only project library for latest build
 
 ## Changelog
-v1.0 First version - Color Overlay
-v1.1 Add image overlay (Experimental) and getPercentage with callback (thanks to davefong)
+- v1.0 First version - Color Overlay
+- v1.1 Add image overlay (Experimental) and getPercentage with callback (thanks to davefong)
 
 ## Todo
--update Image Overlay (done 23 June 2014)
--update getPercentage (done 23 June 2014)
--update project structures
--update google play sample
--update tutorial
+- update Image Overlay (done 23 June 2014)
+- update getPercentage (done 23 June 2014)
+- update project structures
+- update google play sample
+- update tutorial
 
 ## Screenshots
 ![Screenshot](https://github.com/winsontan520/Android-WScratchView/raw/master/screenshot1.png)
