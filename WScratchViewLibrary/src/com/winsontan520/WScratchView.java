@@ -71,6 +71,11 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 	private Canvas mScratchedTestCanvas;
 	private OnScratchCallback mOnScratchCallback;
 
+    //Enable scratch all area if mClearCanvas is true
+    private boolean mClearCanvas = false;
+    //Enable click on WScratchView if mIsClickable is true
+    private boolean mIsClickable = false;
+
 	public WScratchView(Context ctx, AttributeSet attrs) {
 		super(ctx, attrs);
 		init(ctx, attrs);
@@ -138,6 +143,12 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
+        //Clear all area if mClearCanvas is true
+        if(mClearCanvas){
+            canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
+            return;
+        }
+
 		if (mScratchBitmap != null) {
 			if (mMatrix == null) {
 				float scaleWidth = (float) canvas.getWidth() / mScratchBitmap.getWidth();
@@ -192,6 +203,18 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 				updateScratchedPercentage();
 				break;
 			case MotionEvent.ACTION_UP:
+                //Set call back if user's finger detach
+                mOnScratchCallback.onDetach(true);
+                //perform Click action if the motion is not move
+                //and the WScratchView is clickable
+                if(!mScratchStart && mIsClickable){
+                    post(new Runnable() {
+                        @Override
+                        public void run() {
+                            performClick();
+                        }
+                    });
+                }
 				mScratchStart = false;
 				break;
 			}
@@ -360,5 +383,19 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 	
 	public static abstract class OnScratchCallback{
 		public abstract void onScratch(float percentage);
+        //Call back funtion to monitor the status of finger
+        public abstract void onDetach(boolean fingerDetach);
 	}
+
+    //Set the mClearCanvas
+    @Override
+    public void setScratchAll(boolean scratchAll){
+        mClearCanvas = scratchAll;
+    }
+
+    //Set the WScartchView clickable
+    @Override
+    public void setBackgroundClickable(boolean clickable){
+        mIsClickable = clickable;
+    }
 }

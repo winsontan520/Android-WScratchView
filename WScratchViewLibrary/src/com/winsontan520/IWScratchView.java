@@ -95,4 +95,8 @@ public interface IWScratchView {
 	public float getScratchedRatio(int speed);
 
 	public void setOnScratchCallback(OnScratchCallback callback);
+
+    public void setScratchAll(boolean scratchAll);
+
+    public void setBackgroundClickable(boolean clickable);
 }
