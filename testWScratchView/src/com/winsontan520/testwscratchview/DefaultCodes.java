@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.winsontan520.testwscratchview.R;
 import com.winsontan520.WScratchView;
@@ -13,6 +15,7 @@ import com.winsontan520.WScratchView;
 public class DefaultCodes extends Activity {
 	private WScratchView scratchView;
 	private TextView percentageView;
+	private float mPercentage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class DefaultCodes extends Activity {
 		scratchView.setRevealSize(50);
 		scratchView.setAntiAlias(true);
 		scratchView.setOverlayColor(Color.RED);
+		scratchView.setBackgroundClickable(true);
 
 		// add callback for update scratch percentage
 		scratchView.setOnScratchCallback(new WScratchView.OnScratchCallback() {
@@ -36,12 +40,29 @@ public class DefaultCodes extends Activity {
 				updatePercentage(percentage);
 			}
 
+			@Override
+			public void onDetach(boolean fingerDetach) {
+				if(mPercentage > 50){
+					scratchView.setScratchAll(true);
+					updatePercentage(100);
+				}
+			}
+		});
+		
+		scratchView.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(DefaultCodes.this, "Clicked", Toast.LENGTH_SHORT).show();
+			}
+			
 		});
 
 		updatePercentage(0f);
 	}
 
 	protected void updatePercentage(float percentage) {
+		mPercentage = percentage;
 		String percentage2decimal = String.format("%.2f", percentage) + " %";
 		percentageView.setText(percentage2decimal);
 	}
@@ -57,6 +78,7 @@ public class DefaultCodes extends Activity {
 		switch (view.getId()) {
 		case R.id.reset_button:
 			scratchView.resetView();
+			scratchView.setScratchAll(false); // todo: should include to resetView?
 			updatePercentage(0f);
 			break;
 		}

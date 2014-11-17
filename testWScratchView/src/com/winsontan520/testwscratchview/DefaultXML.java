@@ -11,6 +11,7 @@ import com.winsontan520.WScratchView;
 public class DefaultXML extends Activity {
 	private WScratchView scratchView;
 	private TextView percentageView;
+	private float mPercentage;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,20 @@ public class DefaultXML extends Activity {
 				updatePercentage(percentage);
 			}
 
+			@Override
+			public void onDetach(boolean fingerDetach) {
+				if(mPercentage > 50){
+					scratchView.setScratchAll(true);
+					updatePercentage(100);
+				}
+			}
 		});
 		
 		updatePercentage(0f);
 	}
 
 	protected void updatePercentage(float percentage) {
+		mPercentage = percentage;
 		String percentage2decimal = String.format("%.2f", percentage) + " %";
 		percentageView.setText(percentage2decimal);
 	}
@@ -50,6 +59,7 @@ public class DefaultXML extends Activity {
 		switch(view.getId()){
 		case R.id.reset_button:
 			scratchView.resetView();
+			scratchView.setScratchAll(false); // todo: should include to resetView?
 			updatePercentage(0f);
 			break;
 		}
