@@ -11,6 +11,7 @@ Please use only project library for latest build
 ## Changelog
 - v1.0 First version - Color Overlay
 - v1.1 Add image overlay (Experimental) and getPercentage with callback (thanks to davefong)
+- v1.2 Add Click Listener and Automatically Scratch All Features (by gilbert1991)
 
 ## Todo
 - update Image Overlay (done 23 June 2014)
@@ -49,12 +50,10 @@ If you never include library project, I would recommend you to use option 2.
 
 6. You can customize the overlay color, size and other attributes by changing the value. The attributes are self explanatory.
 
-## Option 2: Without library project (Using standalone Jar) (OBSOLETE)
-This option no longer available since v1.1, please use project library.
-
 ## Contributions
 
 * [daveyfong](https://github.com/daveyfong)
+* [gilbert1991](https://github.com/gilbert1991)
 
 ## License
     Copyright 2013 Winson Tan
