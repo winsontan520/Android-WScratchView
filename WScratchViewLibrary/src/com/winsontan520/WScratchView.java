@@ -204,7 +204,9 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 				break;
 			case MotionEvent.ACTION_UP:
                 //Set call back if user's finger detach
-                mOnScratchCallback.onDetach(true);
+                if(mOnScratchCallback != null){
+                        mOnScratchCallback.onDetach(true);	
+                }
                 //perform Click action if the motion is not move
                 //and the WScratchView is clickable
                 if(!mScratchStart && mIsClickable){
