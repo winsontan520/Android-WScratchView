@@ -1,7 +1,7 @@
 Android-WScratchView
 ====================
-##PLEASE NOTE, THIS PROJECT IS NO LONGER BEING MAINTAINED, YOU ARE WELCOME TO COPY AND IMPROVE AS YOUR OWN PROJECT. PLEASE INFORM ME THE IMPROVED VERSION SO I CAN LINK IT FOR OTHER USERS
-####NOTE: This is NOT the best method but just a quick hack, the overlay will always on top of all layout. Improvement is needed for drawing one time on surface instead drawing multiple times.
+## PLEASE NOTE, THIS PROJECT IS NO LONGER BEING MAINTAINED, YOU ARE WELCOME TO COPY AND IMPROVE AS YOUR OWN PROJECT. PLEASE INFORM ME THE IMPROVED VERSION SO I CAN LINK IT FOR OTHER USERS
+#### NOTE: This is NOT the best method but just a quick hack, the overlay will always on top of all layout. Improvement is needed for drawing one time on surface instead drawing multiple times.
 
 ## Features
 This is a simple library that provide a quick implementation by writing code in xml layout to create a view which can be scratched to reveal items behind it like Scratchcard!
