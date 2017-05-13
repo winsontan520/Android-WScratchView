@@ -32,6 +32,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -45,11 +47,16 @@ import android.view.SurfaceView;
 public class WScratchView extends SurfaceView implements IWScratchView, SurfaceHolder.Callback {
 	private static final String TAG = "WScratchView";
 
+
+
 	// default value constants
 	private final int DEFAULT_COLOR = 0xff444444; // default color is dark gray
-	private final int DEFAULT_REVEAL_SIZE = 30;
+	private final int DEFAULT_REVEAL_SIZE =70;
 	
-	public static final int DEFAULT_SCRATCH_TEST_SPEED = 4;
+	public static final int DEFAULT_SCRATCH_TEST_SPEED = 50;
+
+	GestureDetector gestureDetector;
+
 
 	private Context mContext;
 	private WScratchViewThread mThread;
@@ -78,6 +85,7 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 
 	public WScratchView(Context ctx, AttributeSet attrs) {
 		super(ctx, attrs);
+		gestureDetector = new GestureDetector(ctx, new GestureListener());
 		init(ctx, attrs);
 	}
 
@@ -140,35 +148,64 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 	}
 
 	@Override
-	public void onDraw(Canvas canvas) {
+	public void onDraw(Canvas canvas)
+	{
 		super.onDraw(canvas);
 
         //Clear all area if mClearCanvas is true
-        if(mClearCanvas){
+        if(mClearCanvas)
+		{
             canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
             return;
         }
 
-		if (mScratchBitmap != null) {
-			if (mMatrix == null) {
+		if (mScratchBitmap != null)
+		{
+			if (mMatrix == null)
+			{
+				mMatrix = new Matrix();
 				float scaleWidth = (float) canvas.getWidth() / mScratchBitmap.getWidth();
 				float scaleHeight = (float) canvas.getHeight() / mScratchBitmap.getHeight();
-				mMatrix = new Matrix();
-				mMatrix.postScale(scaleWidth, scaleHeight);
+				float scaleFactor = Math.max(scaleWidth, scaleHeight);
+				float scaledWidth = mScratchBitmap.getWidth() * scaleFactor;
+				float scaledHeight = mScratchBitmap.getHeight() * scaleFactor;
+
+				mMatrix.postScale(scaleFactor, scaleFactor);
+
+				float translationOffset;
+
+				if (scaleWidth > scaleHeight)
+				{
+					translationOffset = (canvas.getHeight() - scaledHeight) / 2;
+				}
+				else
+				{
+					translationOffset = (canvas.getWidth() - scaledWidth) / 2;
+				}
+
+				mMatrix.postTranslate(translationOffset, 0);
+
+//				Log.d("Liam", "################################################################");
+//				Log.d("Liam", "CanvasWidth: " + canvas.getWidth() + "  CanvasHeight: " + canvas.getHeight());
+//				Log.d("Liam", "BitmapWidth: " + mScratchBitmap.getWidth() + "  BitmapHeight: " + mScratchBitmap.getHeight());
+//				Log.d("Liam", "ScaleWidth: " + scaleWidth + "  ScaleHeight: " + scaleHeight);
+//				Log.d("Liam", "ScaleFactor: " + scaleFactor);
+//				Log.d("Liam", "ScaledWidth: " + scaledWidth + "  ScaledHeight: " + scaledHeight);
+//				Log.d("Liam", "TranslationOffset: " + translationOffset);
 			}
 			canvas.drawBitmap(mScratchBitmap, mMatrix, mBitmapPaint);
-		} else {
+		} else
+		{
 			canvas.drawColor(mOverlayColor);
 		}
 
-		for (Path path : mPathList) {
+		for (Path path : mPathList)
+		{
 			mOverlayPaint.setAntiAlias(mIsAntiAlias);
 			mOverlayPaint.setStrokeWidth(mRevealSize);
 
 			canvas.drawPath(path, mOverlayPaint);
 		}
-		
-		
 	}
 
 	private void updateScratchedPercentage() {
@@ -184,45 +221,56 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 			}
 
 			switch (me.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				path = new Path();
-				path.moveTo(me.getX(), me.getY());
-				startX = me.getX();
-				startY = me.getY();
-				mPathList.add(path);
-				break;
-			case MotionEvent.ACTION_MOVE:
-				if (mScratchStart) {
-					path.lineTo(me.getX(), me.getY());
-				} else {
-					if (isScratch(startX, me.getX(), startY, me.getY())) {
-						mScratchStart = true;
-						path.lineTo(me.getX(), me.getY());
-					}
-				}
-				updateScratchedPercentage();
-				break;
-			case MotionEvent.ACTION_UP:
-                //Set call back if user's finger detach
-                if(mOnScratchCallback != null){
-                        mOnScratchCallback.onDetach(true);	
-                }
-                //perform Click action if the motion is not move
-                //and the WScratchView is clickable
-                if(!mScratchStart && mIsClickable){
-                    post(new Runnable() {
-                        @Override
-                        public void run() {
-                            performClick();
+                case MotionEvent.ACTION_DOWN:
+                    path = new Path();
+                    path.moveTo(me.getX(), me.getY());
+                    startX = me.getX();
+                    startY = me.getY();
+                    mPathList.add(path);
+					//Log.d("Single Tap", "Tapped at: (" + me.getX() + "," + me.getY() + ")");
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (mScratchStart) {
+                        path.lineTo(me.getX(), me.getY());
+                    } else {
+                        if (isScratch(startX, me.getX(), startY, me.getY())) {
+                            mScratchStart = true;
+                            path.lineTo(me.getX(), me.getY());
                         }
-                    });
-                }
-				mScratchStart = false;
-				break;
+                    }
+					//Log.d("Drawing", "Tapped at: (" + me.getX() + "," + me.getY() + ") " + mScratchStart);
+                    updateScratchedPercentage();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    //Set call back if user's finger detach
+                    if(mOnScratchCallback != null){
+                            mOnScratchCallback.onDetach(true);
+                    }
+                    //perform Click action if the motion is not move
+                    //and the WScratchView is clickable
+                    if(!mScratchStart && mIsClickable){
+                        post(new Runnable() {
+							@Override
+							public void run() {
+								performClick();
+							}
+						});
+                    }
+                    mScratchStart = false;
+					//Log.d("Release", "Released at: (" + me.getX() + "," + me.getY() + ")");
+                    break;
+            }
+			if (gestureDetector.onTouchEvent(me)) {
+				if(mOnScratchCallback != null){
+					mOnScratchCallback.onDoubleTap(true);
+				}
+				Log.d("ScratchView", "Double Clicked");
 			}
 			return true;
 		}
 	}
+
+
 
 	private boolean isScratch(float oldX, float x, float oldY, float y) {
 		float distance = (float) Math.sqrt(Math.pow(oldX - x, 2) + Math.pow(oldY - y, 2));
@@ -236,10 +284,13 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 	@Override
 	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
 		// do nothing
+
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder arg0) {
+
+		Log.d("ScratchView", "Surface created");
 		mThread = new WScratchViewThread(getHolder(), this);
 		mThread.setRunning(true);
 		mThread.start();
@@ -291,6 +342,7 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 					synchronized (mSurfaceHolder) {
 						if (c != null) {
 							mView.draw(c);
+							//Log.d("Drawing", "Currently drawing");
 						}
 					}
 				} finally {
@@ -301,6 +353,28 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 			}
 		}
 	}
+
+	private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return false;
+		}
+
+		// event when double tap occurs
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+			float x = e.getX();
+			float y = e.getY();
+
+			Log.d("Double Tap", "Tapped at: (" + x + "," + y + ")");
+			resetView();
+			setScratchAll(false);
+
+			return true;
+		}
+	}
+
 
 	@Override
 	public void resetView() {
@@ -387,6 +461,8 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 		public abstract void onScratch(float percentage);
         //Call back funtion to monitor the status of finger
         public abstract void onDetach(boolean fingerDetach);
+
+		public abstract void onDoubleTap(boolean doubleClick);
 	}
 
     //Set the mClearCanvas
@@ -400,4 +476,6 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
     public void setBackgroundClickable(boolean clickable){
         mIsClickable = clickable;
     }
+
+
 }

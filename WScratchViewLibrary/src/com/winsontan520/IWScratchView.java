@@ -75,7 +75,7 @@ public interface IWScratchView {
 	/**
 	 * Set bitmap for scratch view
 	 * 
-	 * @param bitmap - Set bitmap for scratch view
+	 * @param b - Set bitmap for scratch view
 	 */
 	public void setScratchBitmap(Bitmap b);
 
@@ -89,7 +89,7 @@ public interface IWScratchView {
 	/**
 	 * Get scratched ratio (contribution from daveyfong)
 	 * 
-	 * @param int - Scratch speed
+	 * @param speed - Scratch speed
 	 * @return  float - return Scratched ratio
 	 */
 	public float getScratchedRatio(int speed);
